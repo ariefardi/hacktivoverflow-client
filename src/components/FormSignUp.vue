@@ -34,7 +34,7 @@ input,
   border-radius: 1px;
   margin: 5px 0;
   opacity: 0.85;
-  display: inline-block;
+  display: block;
   font-size: 17px;
   line-height: 20px;
   text-decoration: none; /* remove underline from anchors */
@@ -50,6 +50,7 @@ input:hover,
 .fb {
   background-color: #3B5998;
   color: white;
+  display: block;
 }
 
 .twitter {
@@ -74,15 +75,6 @@ input[type=submit]:hover {
 }
 
 
-
-/* vertical line */
-.vl {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%);
-  border: 2px solid #ddd;
-  height: 175px;
-}
 
 
 

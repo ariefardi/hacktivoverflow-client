@@ -32,7 +32,8 @@ export default {
   background-color:white;
   padding: 0;
   position: fixed;
-  margin-top: -3.9%;
+  top: 0;
+  z-index: 9;
 }
 
 .topnav a {
