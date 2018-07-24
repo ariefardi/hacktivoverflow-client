@@ -31,7 +31,8 @@
     <v-container>
     <v-container fluid grid-list-md text-xs-center>
       <v-layout row wrap justify-space-between >
-        <Question></Question>
+        <QuestionHeader></QuestionHeader>
+        <QuestionCard/>
       </v-layout>
     </v-container>
     </v-container>
@@ -43,14 +44,16 @@
 import HelloWorld from '@/components/HelloWorld.vue'
 import Navbar from '@/components/Navbar.vue'
 import FormSignUp from '@/components/FormSignUp.vue'
-import Question from '@/components/Question.vue'
+import QuestionHeader from '@/components/QuestionHeader.vue'
+import QuestionCard from '@/components/QuestionCard.vue'
 export default {
   name: 'home',
   components: {
     HelloWorld,
     Navbar,
     FormSignUp,
-    Question
+    QuestionHeader,
+    QuestionCard
   }
 }
 </script>
