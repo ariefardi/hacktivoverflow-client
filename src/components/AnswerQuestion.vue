@@ -2,7 +2,7 @@
 <div>
     <v-container grid-list-md text-xs-center>
         <v-layout row wrap justify-center>
-            <v-flex xs12 sm7 md7 style="padding:0">
+            <v-flex xs12 sm8 md8 style="padding:0">
                 <v-container>
                     <v-layout>
                         <v-flex xs1 >
@@ -12,7 +12,7 @@
                                 <v-btn icon> <v-icon> fa fa-thumbs-down </v-icon> </v-btn>
                             </v-card>
                         </v-flex>
-                        <v-flex xs11 >
+                        <v-flex xs9 >
                             <v-card>
                                 <section>
                                     <p>Answer goes here</p>
@@ -26,17 +26,12 @@
                                         </v-card-text>
                                     </v-card>
                                 </v-flex>
+                                <!-- commet goes here -->
                                 <CommentQuestion/>
-                                <v-card-actions>
-                                    2 answer
-                                </v-card-actions>
                             </v-card>
                         </v-flex>
                     </v-layout>
                 </v-container>
-            </v-flex>
-            <v-flex xs2 sm1 md1>
-                    <v-btn> Ask Question </v-btn>
             </v-flex>
         </v-layout>
     </v-container>

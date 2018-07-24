@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <Navbar></Navbar>
-    <v-container style="padding:0" fluid>
+    <Navbar/>
+    <v-container style="padding:0;margin-top:50px" fluid>
       <div class="bg-img">
         <v-layout row wrap>
           <v-flex xs12 sm6 md6>

@@ -30,7 +30,9 @@ export default {
 .topnav {
   overflow: hidden;
   background-color:white;
-  padding: 0
+  padding: 0;
+  position: fixed;
+  margin-top: -3.9%;
 }
 
 .topnav a {

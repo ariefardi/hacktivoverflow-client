@@ -1,6 +1,6 @@
 <template>
 <div>
-    <v-container grid-list-md text-xs-center>
+    <v-container grid-list-md text-xs-center style="margin-top:50px">
         <v-layout row wrap justify-center>
             <v-flex xs12 sm7 md7 style="padding:0">
                 <v-card >
@@ -31,6 +31,7 @@
                                         </v-card-text>
                                     </v-card>
                                 </v-flex>
+                                <!-- commet goes -->
                                 <CommentQuestion/>
                                 <v-card-actions>
                                     2 answer
@@ -41,7 +42,7 @@
                 </v-container>
             </v-flex>
             <v-flex xs2 sm1 md1>
-                    <v-btn> Ask Question </v-btn>
+                    <h4 class="textt" > <v-btn color="blue"> Ask Question </v-btn>  </h4>
             </v-flex>
         </v-layout>
     </v-container>
@@ -59,5 +60,8 @@ export default {
 <style scoped>
 h2 {
     text-align: left
+}
+.textt {
+    text-decoration-color: white !important
 }
 </style>
