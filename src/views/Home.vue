@@ -5,7 +5,7 @@
       <div class="bg-img">
         <v-layout row wrap>
           <v-flex xs12 sm6 md6>
-            <FormSignUp></FormSignUp>
+            <FormSignUp v-if="!loginStatus" ></FormSignUp>
           </v-flex>
           <v-flex xs12 sm6 md6 >
             <v-card flat>
@@ -54,6 +54,16 @@ export default {
     FormSignUp,
     QuestionHeader,
     QuestionCard
+  },
+  created () {
+    if (localStorage.hasOwnProperty('token')) {
+      this.loginStatus = true
+    }
+  },
+  data () {
+    return {
+      loginStatus: false
+    }
   }
 }
 </script>

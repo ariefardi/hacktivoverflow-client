@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import About from './views/About.vue'
 import Question from './views/Question.vue'
 import AskQuestion from './views/AskQuestion.vue'
+import Login from './views/Login.vue'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/askquestion',
       name: 'askquestion',
       component: AskQuestion
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
     }
   ]
 })

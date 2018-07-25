@@ -1,11 +1,11 @@
 <template>
     <div class="topnav" id="myTopnav" >
-        <img style="padding:1%" class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Stack_Overflow_logo.svg/2000px-Stack_Overflow_logo.svg.png" alt="">
+        <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Stack_Overflow_logo.svg/2000px-Stack_Overflow_logo.svg.png" alt="">
         <a href="#news" style="color:black   
         ">News</a>
         <div class="left" >
-            <a href="#" class="active" > Signup</a>
-            <a href="#" style="color:black">Login</a>
+          <router-link v-if="!loginStatus" to="/login" class="active" > Login </router-link>
+            <a @click="logout" v-if="loginStatus" href="#" class="active" > Logout</a>
         </div>
         <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i style="color:black" class="fa fa-bars"></i>
@@ -13,9 +13,26 @@
     </div>    
 </template>
 <script>
+import swal from 'sweetalert'
 
 export default {
-
+  data () {
+    return {
+      loginStatus: false
+    }
+  },
+  created () {
+    if (localStorage.hasOwnProperty('token')) {
+      this.loginStatus = true
+    }
+  },
+  methods: {
+    logout () {
+      swal('Berhasil Logout')
+      this.loginStatus = false
+      localStorage.clear()
+    }
+  }
 }
 </script>
 <style scoped>
@@ -23,6 +40,8 @@ export default {
     width: 10%;
     height: 10%;
     float: left;
+    padding-top: 1%;
+    padding-left: 1%;
 }
 .left {
     float: right;
