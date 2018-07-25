@@ -13,16 +13,39 @@
         </div>
         </v-flex>
         <v-flex xs12 sm6 md6>
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <input type="submit" value="Signup">
+        <input type="text" name="email" placeholder="Email" v-model="email" required>
+        <input type="text" name="username" placeholder="Username" v-model="username" required>
+        <input type="password" name="password" placeholder="Password" v-model="password" required>
+        <input type="submit" @click="register" value="Register">
         </v-flex>
   </v-layout>
 </v-container>
 </template>
+
 <script>
+import axios from 'axios'
 export default {
-    
+  data () {
+    return {
+      username: '',
+      email: '',
+      password: ''
+    }
+  },
+  methods : {
+    register () {
+      console.log('register')
+      let obj = {
+        username: this.username,
+        email: this.email,
+        password: this.password
+      }
+      axios.post('http://localhost:3000/users/register',obj)
+      .then(({data})=> {
+        console.log(data)
+      })
+    }
+  }
 }
 </script>
 <style scoped>

@@ -1,5 +1,5 @@
 <template>
-<div style="margin-top:3%">
+<div>
   <v-footer
     dark
     height="auto"

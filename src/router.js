@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import About from './views/About.vue'
 import Question from './views/Question.vue'
+import AskQuestion from './views/AskQuestion.vue'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/question',
       name: 'question',
       component: Question
+    },
+    {
+      path: '/askquestion',
+      name: 'askquestion',
+      component: AskQuestion
     }
   ]
 })
