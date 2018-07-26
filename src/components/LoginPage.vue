@@ -77,6 +77,7 @@ export default {
             })
             .catch(err=> {
                 swal('Username/Password salah')
+                console.log(err)
             })
         }
     }

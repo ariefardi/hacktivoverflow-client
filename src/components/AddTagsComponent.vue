@@ -1,7 +1,7 @@
 <template>
 <div>
   <v-combobox
-    v-model="chips"
+    v-model="tags"
     label="at least one tag such as (bash node.js angular), max"
     chips
     clearable
@@ -11,10 +11,7 @@
     class="tags"
   >
     <template slot="selection" slot-scope="data">
-      <v-chip
-        close
-        @input="remove(data.item)"
-      >
+      <v-chip>
         <v-card color="blue lighten-4" style="padding:0">
             <div class="paddingInside">
                 <strong>{{ data.item }}</strong>
@@ -27,13 +24,23 @@
 </template>
 
 <script>
+// import {mapState} from 'vuex'
   export default {
     data () {
       return {
         chips: ['Javascript']
       }
     },
-
+    computed: {
+      tags : {
+        get () {
+          return this.$store.state.tags
+        },
+        set (value) {
+          this.$store.commit('setTags',value)
+        }
+      }
+    },
     methods: {
       remove (item) {
         this.chips.splice(this.chips.indexOf(item), 1)

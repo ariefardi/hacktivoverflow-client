@@ -20,7 +20,7 @@
                                 <v-card flat>
                                     <div class="area">
                                         <label for="title">Title</label>
-                                        <input type="text" id="title" name="title" placeholder="Title..">
+                                        <input v-model="title" type="text" id="title" placeholder="Title..">
                                    </div>
                                 </v-card>
                             </v-flex>
@@ -32,7 +32,7 @@
                                 <v-card>
                                     <div class="area">
                                         <label for="textarea"> Body </label>
-                                        <wysiwyg/>
+                                        <wysiwyg v-model="content" />
                                     </div>
                                 </v-card>  
                             </v-flex>
@@ -67,16 +67,42 @@
                 </v-flex>
             </v-layout>
         </v-container>
-         <v-btn color="blue" class="buttonClass">Post Your Question</v-btn>
+         <v-btn color="blue" class="buttonClass" @click="postQuestion">Post Your Question</v-btn>
     </div>
 </template>
 
 <script>
 import addTagsComponent from '@/components/AddTagsComponent.vue'
+import {mapActions} from 'vuex'
+// import axios from 'axios'
 export default {
     components : {
         addTagsComponent
+    },
+    methods: {
+        ...mapActions([
+            'postQuestion'
+        ])
+    },
+    computed: {
+        title: {
+            get () {
+                return this.$store.state.title
+            },
+            set (value) {
+                this.$store.commit('setTitle', value)
+            }
+        },
+        content: {
+            get () {
+                return this.$store.state.content
+            },
+            set (value) {
+                this.$store.commit('setContent', value)
+            }
+        }
     }
+
 }
 </script>
 

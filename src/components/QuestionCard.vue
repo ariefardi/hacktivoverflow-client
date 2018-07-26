@@ -1,7 +1,7 @@
 <template>
     <v-flex xs12>
         <hr>
-        <v-card flat v-for="i in 4" :key="i" style="padding:0" >
+        <v-card flat v-for="(article, index) in articles" :key="index" style="padding:0" >
             <v-container style="padding:0" >
                 <v-layout >
                     <v-flex xs4>
@@ -10,20 +10,16 @@
                                 <v-layout>
                                     <v-flex xs12 style="padding:0" >
                                         <v-card flat >
-                                            <v-card-text style="padding:0" ><strong> 5 </strong></v-card-text>
-                                            <v-card-text style="padding:0" >upvote</v-card-text>
+                                            <v-card-text v-if="article.answers.length>0" style="padding:0" ><strong> {{article.answers.length}} </strong></v-card-text>
+                                            <v-card-text v-else style="padding:0" > <strong> 0 </strong> </v-card-text>
+                                            <v-card-text style="padding:0" >answers</v-card-text>
                                         </v-card>
                                     </v-flex>
                                     <v-flex xs12 style="padding:0" >
                                         <v-card flat >
-                                            <v-card-text style="padding:0;" > <strong> 1 </strong> </v-card-text>
-                                            <v-card-text style="padding:0" >downvote</v-card-text>
-                                        </v-card>
-                                    </v-flex>
-                                    <v-flex xs12 style="padding:0" >
-                                        <v-card flat >
-                                            <v-card-text style="padding:0"><strong> 12 </strong></v-card-text>
-                                            <v-card-text style="padding:0" >answer</v-card-text>
+                                            <v-card-text v-if="!article.upvote" style="padding:0" > <strong> {{article.upvote.length}} </strong> </v-card-text>
+                                            <v-card-text v-else style="padding:0" > <strong> 0 </strong>  </v-card-text>
+                                            <v-card-text style="padding:0" >up votes</v-card-text>
                                         </v-card>
                                     </v-flex>
                                 </v-layout>
@@ -32,13 +28,11 @@
                     </v-flex>
                     <v-flex xs8>
                         <v-card flat style="margin-top:1%" >
-                             <h3> <router-link class="router" to="/about" > mongoose not working </router-link> </h3>
+                             <h3> <router-link class="router" :to="`/question/${article._id}`" > {{article.title}} </router-link> </h3>
                             <v-card-actions style="padding:0" >
-                                <p> <router-link class="tagSpan" to="/about"> javascript </router-link> </p>
-                                <p> <router-link class="tagSpan" to="/about"> nodejs </router-link> </p>
-                                <p> <router-link class="tagSpan" to="/about"> mongoose </router-link> </p>
+                                <p v-for="(tag, index) in article.tags" :key="index" > <router-link class="tagSpan" to="/about"> {{tag}} </router-link> </p>
                                 <v-spacer></v-spacer>
-                                <p>asked 50 secs ago arief</p>
+                                <p>asked {{article.date}} by {{article.user.username}} </p>
                             </v-card-actions>
                         </v-card>
                     </v-flex>
@@ -49,8 +43,16 @@
     </v-flex>
 </template>
 <script>
+import {mapState} from 'vuex'
 export default {
-    
+    created () {
+        this.$store.dispatch('getQuestion')
+    },
+    computed: {
+        ...mapState([
+            'articles'
+        ])
+    }
 }
 </script>
 <style scoped>

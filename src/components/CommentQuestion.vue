@@ -19,7 +19,10 @@
 
 <script>
 export default {
-    
+    props : ['commentsQuestions'],
+    created () {
+        console.log(this.commentsArticle,'commen question')
+    }
 }
 </script>
 
