@@ -11,7 +11,8 @@ export default new Vuex.Store({
     articles : [],
     title: '',
     content: '',
-    tags: []
+    tags: [],
+    pageArticle: ''
   },
   mutations: {
     setTitle(state, payload) {
@@ -28,6 +29,9 @@ export default new Vuex.Store({
     },
     setArticles (state, payload) {
       state.articles = payload
+    },
+    setPageArticle (state, payload) {
+      state.pageArticle = payload
     }
   },
   actions: {
@@ -63,6 +67,15 @@ export default new Vuex.Store({
       .catch(err=> {
         console.log(err.message)
       })
+    },
+    getOneQuestion (contex,value) {
+      console.log(value, ' ini dari store')
+      // let id = this.$router.params.id
+      // axios.get('http://localhost:3000/articles/'+id)
+      // .then(({data})=> {
+      //     let result = data.article
+      //     console.log(result)
+      // })
     }
   }
 })

@@ -2,14 +2,20 @@
     <v-container>
         <v-layout justify-center="">
             <v-flex xs12>
-                <v-card>
-                    <v-card-text>
-                        comment goes here
+                <v-card  >
+                    <v-card-text >
+                        {{newBaru}}
                     </v-card-text>
                 </v-card>
                 <v-card>
                     <v-card-text>
-                        comment goes here
+                        test
+                    </v-card-text>
+                    
+                </v-card>
+                <v-card v-if="newBaru==undefined" >
+                    <v-card-text>
+                        teteasf
                     </v-card-text>
                 </v-card>
             </v-flex>
@@ -19,9 +25,14 @@
 
 <script>
 export default {
-    props : ['commentsQuestions'],
+    props : ['commentsArticle'],
     created () {
         console.log(this.commentsArticle,'commen question')
+    },
+    computed: {
+        newBaru () {
+            return this.commentsArticle
+        }
     }
 }
 </script>

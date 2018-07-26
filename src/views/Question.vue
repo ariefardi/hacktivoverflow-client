@@ -2,8 +2,8 @@
     <div class="question">
         <Navbar/>
         <CardQuestion/>
-        <AnswerQuestion/>
-        <TextEditor/>
+        <!-- <AnswerQuestion/> -->
+        <!-- <TextEditor/> -->
     </div>
 </template>
 

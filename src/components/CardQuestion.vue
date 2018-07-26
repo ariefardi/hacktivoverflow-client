@@ -30,7 +30,7 @@
                                     </v-card>
                                 </v-flex>
                                 <!-- commet goes here-->
-                                <CommentQuestion v-bind:commentsArticle="'dwdw'"> </CommentQuestion>
+                                <CommentQuestion v-bind:commentsArticle="commentsArticle"> </CommentQuestion>
                                 <v-card-actions >
                                     {{answerLength}} answers
                                 </v-card-actions>
@@ -49,16 +49,17 @@
 <script>
 import axios from 'axios'
 import CommentQuestion from '@/components/CommentQuestion.vue'
+import {mapState, mapActions} from 'vuex'
 export default {
     created () {
-        this.getOneQuestion()
+        this.getQuestion()
     },
     data() {
         return {
             article: '',
             answerLength: 0,
             voteLength: 0,
-            commentsArticle: [],
+            commentsArticle: ['tetew'],
             answersArticle: []
         }
     },
@@ -66,19 +67,13 @@ export default {
         CommentQuestion
     },
     methods: {
-        getOneQuestion () {
+        ...mapActions([
+            'getOneQuestion'
+        ]),
+        getQuestion () {
+            console.log(this.$route.params.id)
             let id = this.$route.params.id
-            axios.get('http://localhost:3000/articles/'+id)
-            .then(({data})=> {
-                let result = data.article
-                this.article = result
-                this.answerLength = this.article.answers.length
-                this.voteLength = this.article.upvote.length - this.article.downvote.length
-                this.commentsArticle = this.article.comments
-                this.answersArticle = this
-                // console.log(this.commentArticle)
-                
-            })
+            this.getOneQuestion(id)
         }
     }
 }
