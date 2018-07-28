@@ -73,6 +73,7 @@ export default {
                 // console.log(data.token)
                 let token = data.token
                 localStorage.setItem('token', token)
+                localStorage.setItem('userId', data.found._id)
                 this.$router.push('/')
             })
             .catch(err=> {

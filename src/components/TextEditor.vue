@@ -12,42 +12,36 @@
     <hr>
     <br>
     <hr>
-    <v-btn style="margin-top:1%;right:20%" color="blue" @click="postYourAnswer"  > Post Your Answer </v-btn>
+    <v-btn style="margin-top:1%;right:20%" color="blue" @click="getArticleId" > Post Your Answer </v-btn>
 </div>
 </template>
 <script>
 import axios from 'axios'
 import swal from 'sweetalert'
+import {mapState, mapActions} from 'vuex'
 export default {
-    data () {
-        return {
-            answerQuestion: ''
+    created () {
+        
+    },
+    computed: {
+        answerQuestion: {
+            get () {
+                return this.$store.state.answerQuestion
+            },
+            set (value) {
+                this.$store.commit('setAnswerQuestion', value)
+            }
         }
     },
     methods: {
-         postYourAnswer () {
-            let token = localStorage.getItem('token')
-            let articleId = this.$route.params.id
-            // console.log(token)
-            // console.log(this.answerQuestion)
-            // console.log(articleId)
-            axios.post('http://localhost:3000/answers',{
-                content: this.answerQuestion,
-                article : articleId
-            },{
-                headers: {
-                    token
-                }
-            })
-            .then(({data})=> {
-                console.log(data)
-                swal('Berhasil Menjawab')
-            })
-            .catch(err=> {
-                console.log(err)
-                swal(err.message)
-            })
-        }
+        ...mapActions([
+            'postYourAnswer'
+        ]),
+         getArticleId () {
+             let id = this.$route.params.id
+             console.log(id, ' ini id cuy')
+            this.postYourAnswer(id)
+         }
     }
 }
 </script>

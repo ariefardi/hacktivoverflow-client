@@ -17,9 +17,8 @@
                                     </v-flex>
                                     <v-flex xs12 style="padding:0" >
                                         <v-card flat >
-                                            <v-card-text v-if="!article.upvote" style="padding:0" > <strong> {{article.upvote.length}} </strong> </v-card-text>
-                                            <v-card-text v-else style="padding:0" > <strong> 0 </strong>  </v-card-text>
-                                            <v-card-text style="padding:0" >up votes</v-card-text>
+                                            <v-card-text style="padding:0" > <strong> {{article | totalVote}} </strong> </v-card-text>
+                                            <v-card-text style="padding:0" > votes</v-card-text>
                                         </v-card>
                                     </v-flex>
                                 </v-layout>
@@ -51,7 +50,13 @@ export default {
     computed: {
         ...mapState([
             'articles'
-        ])
+        ]),
+    },
+    filters: {
+        totalVote (value) {
+            let total = value.upvote.length-value.downvote.length
+            return total
+        }
     }
 }
 </script>

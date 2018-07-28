@@ -5,34 +5,33 @@
             <v-flex xs12 sm7 md7 style="padding:0">
                 <v-card >
                     <v-card-text>
-                        <h2> {{article.title}} </h2>  
+                        <h2> {{pageArticle.title}} </h2>  
                     </v-card-text>
                 </v-card>
                 <v-container>
                     <v-layout>
                         <v-flex xs1 >
                             <v-card>
-                                <v-btn icon > <v-icon> fa fa-thumbs-up </v-icon> </v-btn>
+                                <v-btn icon @click="getIdQuestion" > <v-icon> fa fa-thumbs-up </v-icon> </v-btn>
                                 <v-card-text> {{voteLength}} </v-card-text>
-                                <v-btn icon> <v-icon> fa fa-thumbs-down </v-icon> </v-btn>
+                                <v-btn icon @click="getIdQuestionDown" > <v-icon> fa fa-thumbs-down </v-icon> </v-btn>
                             </v-card>
                         </v-flex>
                         <v-flex xs11 >
-                            <v-card>
+                            <v-card style="padding:20px" >
                                 <section>
-                                    <p v-html="article.content" ></p>
+                                    <p v-html="pageArticle.content" ></p>
                                 </section>
                                 <v-flex  sm12 md12 style="float:right" >
                                     <v-card>
                                         <v-card-text>
-                                            profile foes here
                                         </v-card-text>
                                     </v-card>
                                 </v-flex>
                                 <!-- commet goes here-->
-                                <CommentQuestion v-bind:commentsArticle="commentsArticle"> </CommentQuestion>
+                                <!-- <CommentQuestion v-bind:commentsArticle="commentsArticle"> </CommentQuestion> -->
                                 <v-card-actions >
-                                    {{answerLength}} answers
+                                   {{voteLength}}  answers
                                 </v-card-actions>
                             </v-card>
                         </v-flex>
@@ -40,7 +39,7 @@
                 </v-container>
             </v-flex>
             <v-flex xs2 sm1 md1>
-                    <h4 class="textt" > <v-btn color="blue"> Ask Question </v-btn>  </h4>
+                    <h4 class="textt" > <v-btn color="blue" to="/askquestion" > Ask Question </v-btn>  </h4>
             </v-flex>
         </v-layout>
     </v-container>
@@ -52,28 +51,36 @@ import CommentQuestion from '@/components/CommentQuestion.vue'
 import {mapState, mapActions} from 'vuex'
 export default {
     created () {
-        this.getQuestion()
     },
-    data() {
-        return {
-            article: '',
-            answerLength: 0,
-            voteLength: 0,
-            commentsArticle: ['tetew'],
-            answersArticle: []
-        }
-    },
+    props: ['pageArticle'],
     components: {
         CommentQuestion
     },
+    computed: {
+        voteLength () {
+            let vote = this.pageArticle.upvote.length-this.pageArticle.downvote.length
+            
+            if(vote) {
+                return vote
+            }
+            else{
+                return 0
+            }
+            return 0
+        }
+    },
     methods: {
         ...mapActions([
-            'getOneQuestion'
+            'upvoteQuestion', 'downvoteQuestion'
         ]),
-        getQuestion () {
-            console.log(this.$route.params.id)
-            let id = this.$route.params.id
-            this.getOneQuestion(id)
+        getIdQuestion () {
+            let query = this.$route.params.id
+            console.log(query)
+            this.upvoteQuestion(query)
+        },
+        getIdQuestionDown () {
+            let query = this.$route.params.id
+            this.downvoteQuestion(query)
         }
     }
 }

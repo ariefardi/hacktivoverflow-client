@@ -4,19 +4,19 @@
         <v-layout row wrap justify-center>
             <v-flex xs12 sm8 md8 style="padding:0">
 
-                <v-container v-for="(answer, index) in answers" :key="index" >
+                <v-container v-for="(answer,index) in pageAnswers" :key="index">
                     <v-layout>
                         <v-flex xs1 >
                             <v-card>
-                                <v-btn icon > <v-icon> fa fa-thumbs-up </v-icon> </v-btn>
-                                <v-card-text>121</v-card-text>
-                                <v-btn icon> <v-icon> fa fa-thumbs-down </v-icon> </v-btn>
+                                <v-btn icon @click="getIdAnswerUpvote(index)" > <v-icon> fa fa-thumbs-up </v-icon> </v-btn>
+                                <v-card-text> {{answer | totalVoteAnswer}}  </v-card-text>
+                                <v-btn icon @click="getIdAnswerDownvote(index)" > <v-icon> fa fa-thumbs-down </v-icon> </v-btn>
                             </v-card>
                         </v-flex>
                         <v-flex xs9 >
-                            <v-card>
+                            <v-card style="padding:20px">
                                 <section>
-                                    <p>Answer goes here</p>
+                                    <p v-html="answer.content"></p>
                                 </section>
                                 <v-flex  sm12 md12 style="float:right" >
                                     <v-card>
@@ -31,6 +31,8 @@
                         </v-flex>
                     </v-layout>
                 </v-container>
+                
+
             </v-flex>
         </v-layout>
     </v-container>
@@ -39,35 +41,38 @@
 <script>
 import CommentQuestion from '@/components/CommentQuestion.vue'
 import axios from 'axios'
+import {mapState, mapActions} from 'vuex'
 export default {
      created () {
     },
+    props: ['pageAnswers'],
     data() {
         return {
-            answers: [],
-            answerLength: 0,
-            voteLength: 0,
-            commentsAnswer: ['tetew'],
-            answersAnswer: []
+            
         }
     },
     components: {
         CommentQuestion
     },
+    filters : {
+        totalVoteAnswer (value) {
+            let total = value.upvote.length - value.downvote.length
+            return total
+        }
+    },
     methods: {
-        getAnswer () {
-            // let id = this.$route.params.id
-            // axios.get('http://localhost:3000/articles/'+id)
-            // .then(({data})=> {
-            //     let result = data.article.answers
-            //     this.answers = result
-            //     // this.answerLength = this.article.answers.length
-            //     // this.voteLength = this.article.upvote.length - this.article.downvote.length
-            //     // this.commentsArticle = this.article.comments
-            //     // this.answersArticle = this
-            //     // console.log(this.commentArticle)
-            //     console.log(this,answers, ' ini data dari answer')
-            // })
+        ...mapActions([
+            'upvoteAnswer', 'downvoteAnswer'
+        ]),
+        getIdAnswerUpvote (query) {
+            let id = query
+            console.log(query, 'upvote')
+            this.upvoteAnswer(id)
+        },
+        getIdAnswerDownvote (query) {
+            let id = query
+            console.log(id, 'downvote')
+            this.downvoteAnswer(id)
         }
     }
 }
