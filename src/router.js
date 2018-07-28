@@ -5,6 +5,8 @@ import About from './views/About.vue'
 import Question from './views/Question.vue'
 import AskQuestion from './views/AskQuestion.vue'
 import Login from './views/Login.vue'
+import Dashboard from './views/Dashboard.vue'
+
 
 Vue.use(Router)
 
@@ -34,6 +36,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/dashboard/:id',
+      name: 'dashboard',
+      component: Dashboard
     }
   ]
 })

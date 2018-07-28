@@ -14,19 +14,18 @@
                             </v-card>
                         </v-flex>
                         <v-flex xs9 >
-                            <v-card style="padding:20px">
+                            <v-card style="padding:20px; padding-bottom:60px">
                                 <section>
                                     <p v-html="answer.content"></p>
                                 </section>
                                 <v-flex  sm12 md12 style="float:right" >
                                     <v-card>
                                         <v-card-text>
-                                            profile foes here
+                                             answer at {{answer.date}}
                                         </v-card-text>
                                     </v-card>
                                 </v-flex>
                                 <!-- commet goes here -->
-                                <CommentQuestion/>
                             </v-card>
                         </v-flex>
                     </v-layout>

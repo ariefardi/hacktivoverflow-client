@@ -5,7 +5,9 @@
       <div class="bg-img">
         <v-layout row wrap>
           <v-flex xs12 sm6 md6>
+            <!-- form signup -->
             <FormSignUp v-if="!loginStatus" ></FormSignUp>
+            <!-- end here -->
           </v-flex>
           <v-flex xs12 sm6 md6 >
             <v-card flat>
@@ -46,6 +48,7 @@ import Navbar from '@/components/Navbar.vue'
 import FormSignUp from '@/components/FormSignUp.vue'
 import QuestionHeader from '@/components/QuestionHeader.vue'
 import QuestionCard from '@/components/QuestionCard.vue'
+import { mapState } from 'vuex';
 export default {
   name: 'home',
   components: {
@@ -56,14 +59,19 @@ export default {
     QuestionCard
   },
   created () {
-    if (localStorage.hasOwnProperty('token')) {
-      this.loginStatus = true
+    let token = localStorage.hasOwnProperty('token')
+    if (token) {
+      this.$store.commit('changeLoginStatus',true)
     }
   },
   data () {
     return {
-      loginStatus: false
     }
+  },
+  computed: {
+    ...mapState([
+      'loginStatus'
+    ])
   }
 }
 </script>

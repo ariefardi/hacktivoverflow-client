@@ -2,7 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import swal from 'sweetalert'
+import swal2 from 'sweetalert2'
 import router from './router'
+import alertify from 'alertifyjs'
 
 Vue.use(Vuex)
 
@@ -13,7 +15,11 @@ export default new Vuex.Store({
     content: '',
     tags: [],
     pageArticle: '',
-    answerQuestion: ''
+    answerQuestion: '',
+    loginStatus : false,
+    username: '',
+    password: '',
+    userArticles: []
   },
   mutations: {
     setTitle(state, payload) {
@@ -47,10 +53,27 @@ export default new Vuex.Store({
       state.pageArticle.downvote.push(payload)
     },
     addUpvoteAnswer (state, payload) {
-
+      console.log(' ini dari state mutation', state.pageArticle.answers[payload.id])
+      state.pageArticle.answers[payload.id].upvote.push(payload.userId)
     },
     addDownvoteAnswer (state, payload) {
-
+      console.log(' ini dari state mutation', state.pageArticle.answers[payload.id])
+      state.pageArticle.answers[payload.id].downvote.push(payload.userId)
+    },
+    changeLoginStatus (state, payload) {
+      state.loginStatus = payload
+    },
+    setUsername (state, payload) {
+      state.username = payload
+    },
+    setPassword (state, payload) {
+      state.password = payload
+    },
+    setUserArticles (state, payload) {
+      state.userArticles = payload
+    },
+    deleteUserArticle (state, payload) {
+      state.userArticles.splice(payload,1)
     }
   },
   actions: {
@@ -112,7 +135,10 @@ export default new Vuex.Store({
           console.log(data)
           context.commit('addAnswer', data.answer)
           context.commit('setAnswerQuestion', null)
-          swal('Berhasil Menjawab')
+          // swal('Berhasil Menjawab')
+          alertify.set('notifier','position', 'top-center');
+          alertify.success('Current position : ' + alertify.get('notifier','position'));
+  
       })
       .catch(err=> {
           console.log(err)
@@ -132,9 +158,14 @@ export default new Vuex.Store({
         .then(({data})=> {
           if (data.articleUpdated) {
             context.commit('addUpvote', userId)
+            alertify.success('Your Answer Succesfully Posted')
           }
           else {
             console.log('udah vote')
+            swal({
+              title: data.message,
+              icon: 'warning'
+            })
           }
         })
         .catch(err=> {
@@ -158,6 +189,10 @@ export default new Vuex.Store({
         }
         else {
           console.log('udah vote')
+          swal({
+            title: data.message,
+            icon: 'warning'
+          })
         }
       })
       .catch(err=> {
@@ -177,12 +212,20 @@ export default new Vuex.Store({
       })
       .then(({data})=> {
         console.log(data)
-        // if (data.articleUpdated) {
-        //   context.commit('addDownvote', userId)
-        // }
-        // else {
-        //   console.log('udah vote')
-        // }
+        if (data.answerUpdated) {
+          let obj = {
+            userId,
+            id
+          }
+          context.commit('addUpvoteAnswer', obj )
+        }
+        else {
+          console.log('udah vote')
+          swal({
+            title: data.message,
+            icon: 'warning'
+          })
+        }
       })
       .catch(err=> {
         console.log(err)
@@ -190,6 +233,105 @@ export default new Vuex.Store({
     },
     downvoteAnswer (context, id) {
       console.log('downvote answer')
+      let token = localStorage.getItem('token')
+      let userId = localStorage.getItem('userId')
+      console.log(this.state.pageArticle.answers[id]._id)
+      let query = this.state.pageArticle.answers[id]._id
+      axios.post('http://localhost:3000/answers/downvote/'+query, {}, {
+        headers: {
+          token
+        }
+      })
+      .then(({data})=> {
+        console.log(data)
+        if (data.answerUpdated) {
+          let obj = {
+            userId,
+            id
+          }
+          context.commit('addDownvoteAnswer', obj )
+        }
+        else {
+          console.log('udah vote')
+          swal({
+            title: data.message,
+            icon: 'warning'
+          })
+        }
+      })
+      .catch(err=> {
+        console.log(err)
+      })
+    },
+    login (context) {
+      console.log('login')
+      axios.post('http://localhost:3000/users/login', {
+          username: this.state.username,
+          password: this.state.password
+      })
+      .then(({data})=> {
+          swal('Succesfully Login')
+          // console.log(data.token)
+          let token = data.token
+          localStorage.setItem('token', token)
+          localStorage.setItem('userId', data.found._id)
+          context.commit('changeLoginStatus', true)
+          router.push('/')
+      })
+      .catch(err=> {
+          swal('Username/Password salah')
+          console.log(err)
+      })
+    },
+    logout (context) {
+      swal('Berhasil Logout')
+      context.commit('changeLoginStatus', false)
+      localStorage.clear()
+    },
+    getQuestionByUser ({commit},id) {
+      console.log(id, ' ini masuk gak get question by user')
+      axios.get('http://localhost:3000/articles/users/'+id)
+      .then(({data})=> {
+        console.log(data.articles)
+        let result = data.articles
+        commit('setUserArticles', result)
+      })
+      .catch(err=> {
+        console.log(err)
+      })
+    },
+    deleteQuestion ({commit}, index) {
+      console.log('dete qestion', index)
+      console.log(this.state.userArticles[index]._id)
+      let id = this.state.userArticles[index]._id
+      swal2({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.value) {
+          axios.delete('http://localhost:3000/articles/delete/'+id)
+          .then((response)=> {
+            console.log(response)
+            swal2(
+              'Deleted!',
+              response.data.message,
+              'success'
+            )
+            commit('deleteUserArticle', index)
+          })
+          .catch(err=> {
+            swal2('Waduh error nih patrick!')
+          })
+        }
+      })
+    },
+    updateQuestion ({commit}, id) {
+
     }
   }
 })

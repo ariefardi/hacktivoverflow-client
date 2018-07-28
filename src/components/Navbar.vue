@@ -3,44 +3,59 @@
         <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Stack_Overflow_logo.svg/2000px-Stack_Overflow_logo.svg.png" alt="">
         <a href="#news" style="color:black   
         ">News</a>
+        <router-link :to="`/dashboard/${users}`" v-if="loginStatus" href="#" style="color:black" > Dashboard </router-link>
         <div class="left" >
           <router-link v-if="!loginStatus" to="/login" class="active" > Login </router-link>
             <a @click="logout" v-if="loginStatus" href="#" class="active" > Logout</a>
         </div>
-        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <a href="javascript:void(0);" class="icon" @click="myFunction()">
         <i style="color:black" class="fa fa-bars"></i>
         </a>    
+  
     </div>    
 </template>
 <script>
 import swal from 'sweetalert'
+import {mapState, mapActions} from 'vuex'
 
 export default {
   data () {
     return {
-      loginStatus: false
+      users : localStorage.getItem('userId')
     }
   },
   created () {
-    if (localStorage.hasOwnProperty('token')) {
-      this.loginStatus = true
-    }
+    console.log(this.loginStatus, 'ini login status')
+  },
+  computed: {
+    ...mapState([
+      'loginStatus'
+    ])
   },
   methods: {
-    logout () {
-      swal('Berhasil Logout')
-      this.loginStatus = false
-      localStorage.clear()
+    ...mapActions([
+      'logout'
+    ]),
+    myFunction () {
+      var x = document.getElementById("myTopnav");
+      if (x.className === "topnav") {
+          x.className += " responsive";
+      } else {
+          x.className = "topnav";
+      }
     }
   }
 }
 </script>
 <style scoped>
+.left {
+  float: right;
+}
 .logo {
     width: 10%;
     height: 10%;
     float: left;
-    padding-top: 1%;
+    padding-top: 0.5%;
     padding-left: 1%;
 }
 .left {

@@ -23,15 +23,16 @@
                                     <p v-html="pageArticle.content" ></p>
                                 </section>
                                 <v-flex  sm12 md12 style="float:right" >
-                                    <v-card>
+                                    <v-card flat>
                                         <v-card-text>
+                                            asked at {{pageArticle.date}}
                                         </v-card-text>
                                     </v-card>
                                 </v-flex>
                                 <!-- commet goes here-->
                                 <!-- <CommentQuestion v-bind:commentsArticle="commentsArticle"> </CommentQuestion> -->
                                 <v-card-actions >
-                                   {{voteLength}}  answers
+                                   {{pageArticle.answers.length}} answers
                                 </v-card-actions>
                             </v-card>
                         </v-flex>

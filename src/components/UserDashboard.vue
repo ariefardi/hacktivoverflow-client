@@ -1,7 +1,8 @@
 <template>
+<div class="dashboard">
     <v-flex xs12>
         <hr>
-        <div v-if="articles.length==0">
+        <div v-if="userArticles.length==0">
             <v-app id="inspire">
                 <div class="text-xs-center">
                 
@@ -29,7 +30,7 @@
             </v-app>
         </div>  
         <div v-else >
-            <v-card flat v-for="(article, index) in articles" :key="index" style="padding:0" >
+            <v-card flat v-for="(article, index) in userArticles" :key="index" style="padding:0" >
                 <v-container style="padding:0" >
                     <v-layout >
                         <v-flex xs4>
@@ -45,7 +46,7 @@
                                         </v-flex>
                                         <v-flex xs12 style="padding:0" >
                                             <v-card flat >
-                                                <v-card-text style="padding:0" > <strong> {{article | totalVote}} </strong> </v-card-text>
+                                                <v-card-text style="padding:0" > <strong> {{article | totalVote }} </strong> </v-card-text>
                                                 <v-card-text style="padding:0" > votes</v-card-text>
                                             </v-card>
                                         </v-flex>
@@ -59,7 +60,8 @@
                                 <v-card-actions style="padding:0" >
                                     <p v-for="(tag, index) in article.tags" :key="index" > <router-link class="tagSpan" to="/about"> {{tag}} </router-link> </p>
                                     <v-spacer></v-spacer>
-                                    <p>asked {{article.date}} by {{article.user.username}} </p>
+                                    <v-btn icon @click="deleteQuestion(index)" > <v-icon> delete </v-icon> </v-btn>
+                                    <v-btn icon> <v-icon> edit </v-icon> </v-btn>
                                 </v-card-actions>
                             </v-card>
                         </v-flex>
@@ -69,13 +71,12 @@
             </v-card>
         </div>
     </v-flex>
+</div>
 </template>
+
 <script>
-import {mapState} from 'vuex'
+import {mapState, mapActions} from 'vuex'
 export default {
-    mounted () {
-        this.$store.dispatch('getQuestion')
-    },
     data () {
         return {
         dialog: true
@@ -89,10 +90,22 @@ export default {
         setTimeout(() => (this.dialog = false), 1000)
         }
     },
+    created () {
+        this.getUserParams()
+    },
     computed: {
         ...mapState([
-            'articles'
-        ]),
+            'userArticles'
+        ])
+    },
+    methods: {
+        getUserParams () {
+            let query = this.$route.params.id
+            this.getQuestionByUser(query)
+        },
+        ...mapActions([
+            'getQuestionByUser', 'deleteQuestion', 'updateQuestion'
+        ])
     },
     filters: {
         totalVote (value) {
@@ -102,6 +115,7 @@ export default {
     }
 }
 </script>
+
 <style scoped>
 h3 {
   text-align: left;
@@ -149,3 +163,4 @@ h3 {
     background-color: rgb(215, 231, 243);
 }
 </style>
+

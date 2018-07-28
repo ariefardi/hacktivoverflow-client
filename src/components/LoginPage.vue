@@ -46,6 +46,7 @@
 import Navbar from '@/components/Navbar.vue'
 import axios from 'axios'
 import swal from 'sweetalert'
+import {mapState, mapActions} from 'vuex'
 export default {
     components : {
         Navbar
@@ -55,32 +56,28 @@ export default {
             this.$router.push('/')
         }
     },
-    data () {
-        return {
-            username: '',
-            password: ''
-        }
+    computed: {
+       username: {
+           get () {
+               return this.$store.state.username
+           },
+           set (value) {
+               this.$store.commit('setUsername', value)
+           }
+       },
+       password: {
+           get () {
+               return this.$store.state.password
+           },
+           set (value) {
+               this.$store.commit('setPassword', value)
+           }
+       }
     },
     methods: {
-        login () {
-            console.log('login ')
-            axios.post('http://localhost:3000/users/login', {
-                username: this.username,
-                password: this.password
-            })
-            .then(({data})=> {
-                swal('Succesfully Login')
-                // console.log(data.token)
-                let token = data.token
-                localStorage.setItem('token', token)
-                localStorage.setItem('userId', data.found._id)
-                this.$router.push('/')
-            })
-            .catch(err=> {
-                swal('Username/Password salah')
-                console.log(err)
-            })
-        }
+        ...mapActions([
+            'login'
+        ])
     }
 }
 </script>
