@@ -1,8 +1,8 @@
 <template>
     <div class="topnav" id="myTopnav" >
         <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Stack_Overflow_logo.svg/2000px-Stack_Overflow_logo.svg.png" alt="">
-        <a href="#news" style="color:black   
-        ">News</a>
+        <a href="/" style="color:black   
+        ">Home</a>
         <router-link :to="`/dashboard/${users}`" v-if="loginStatus" href="#" style="color:black" > Dashboard </router-link>
         <div class="left" >
           <router-link v-if="!loginStatus" to="/login" class="active" > Login </router-link>

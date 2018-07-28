@@ -19,7 +19,8 @@ export default new Vuex.Store({
     loginStatus : false,
     username: '',
     password: '',
-    userArticles: []
+    userArticles: [],
+    articleUpdate: ''
   },
   mutations: {
     setTitle(state, payload) {
@@ -74,6 +75,13 @@ export default new Vuex.Store({
     },
     deleteUserArticle (state, payload) {
       state.userArticles.splice(payload,1)
+    },
+    setArticleUpdate (state, payload) {
+      state.articleUpdate = payload
+    },
+    setContentforUpdate (state, payload) {
+      state.title = payload.title
+      state.content = payload.content
     }
   },
   actions: {
@@ -330,8 +338,38 @@ export default new Vuex.Store({
         }
       })
     },
-    updateQuestion ({commit}, id) {
-
+    updateQuestion ({commit}, obj) {
+      console.log(' ini update question',obj)
+      let token = localStorage.getItem('token')
+      let userId = localStorage.getItem('userId')
+      // axios.put('http://localhost:3000/articles/update/'+obj.query)
+      // console.log(this.state.articles)
+      axios.put('http://localhost:3000/articles/update/'+obj.query,{
+        title: this.state.title,
+        content: this.state.content
+      },{
+        headers: {
+          token
+        }
+      })
+      .then(({data})=> {
+        console.log(data, ' berhasil di update')
+        swal('Berhasil update')
+        router.push('/dashboard/'+userId)
+      })
+      .catch(err=> {
+        console.log(err)
+      })
+      
+    },
+    getOneForQuestionUpdate ({commit}, value) {
+      let id = value
+      axios.get('http://localhost:3000/articles/'+id)
+      .then(({data})=> {
+          let result = data.article
+          console.log(result, ' result dari getOne for question update')
+          commit('setContentforUpdate', result)
+      })
     }
   }
 })

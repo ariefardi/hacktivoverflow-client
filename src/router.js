@@ -6,6 +6,7 @@ import Question from './views/Question.vue'
 import AskQuestion from './views/AskQuestion.vue'
 import Login from './views/Login.vue'
 import Dashboard from './views/Dashboard.vue'
+import UpdateQuestion from './views/UpdateQuestion.vue'
 
 
 Vue.use(Router)
@@ -41,6 +42,11 @@ export default new Router({
       path: '/dashboard/:id',
       name: 'dashboard',
       component: Dashboard
+    },
+    {
+      path: '/dashboard/update-question/:id/:index',
+      name: 'update-question',
+      component: UpdateQuestion
     }
   ]
 })

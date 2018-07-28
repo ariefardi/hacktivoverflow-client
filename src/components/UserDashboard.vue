@@ -60,8 +60,8 @@
                                 <v-card-actions style="padding:0" >
                                     <p v-for="(tag, index) in article.tags" :key="index" > <router-link class="tagSpan" to="/about"> {{tag}} </router-link> </p>
                                     <v-spacer></v-spacer>
-                                    <v-btn icon @click="deleteQuestion(index)" > <v-icon> delete </v-icon> </v-btn>
-                                    <v-btn icon> <v-icon> edit </v-icon> </v-btn>
+                                    <v-btn icon @click="deleteQuestion(index)" > <v-icon color="red" > delete </v-icon> </v-btn>
+                                    <v-btn icon :to="`update-question/${article._id}/${index}`" > <v-icon> edit </v-icon> </v-btn>
                                 </v-card-actions>
                             </v-card>
                         </v-flex>
