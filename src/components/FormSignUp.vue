@@ -2,7 +2,7 @@
 <v-container>
     <v-layout justify-center>
         <v-flex xs12 sm6 md6 style="padding:5%" >
-        <a href="#" class="fb btn">
+        <a href="#" @click="fbLogin" class="fb btn">
           <i class="fa fa-facebook fa-fw"></i> Login with Facebook
          </a>
         <a href="#" class="google btn"><i class="fa fa-google fa-fw">
@@ -24,6 +24,8 @@
 
 <script>
 import axios from 'axios'
+import swal from 'sweetalert'
+import {fbLogin, provider} from '@/firebase/firebase.js'
 export default {
   data () {
     return {
@@ -33,6 +35,48 @@ export default {
     }
   },
   methods : {
+    fbLogin () {
+      console.log('fb login')
+      let self = this
+      console.log('fbligon')
+      fbLogin.signInWithPopup(provider)
+      .then(function(result) {
+      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+      // console.log(result.user.displayName,'ini result display Name')
+      // console.log(result.user.email, ' ini email')
+      // console.log(result.user.uid, ' ini id')
+      // var token = result.credential.accessToken;
+      // The signed-in user info.
+      // ...
+
+        const user = result.user
+        axios.post('https://api-overflow.ariefardi.xyz/users/fb/login',{
+          username: user.displayName,
+          email: user.email,
+          password: user.uid
+        })
+        .then(({data})=> {
+          console.log(data.found._id)
+          localStorage.setItem('token',data.token)
+          localStorage.setItem('username',data.found.username)
+          localStorage.setItem('idUser',data.found._id)
+          swal('Kamu berhasil login')
+          self.$router.push('/')
+        })
+      })
+      .catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      console.log(errorCode, errorMessage, email, credential)
+      swal(error.message)
+      // ...
+    });
+    },
     register () {
       console.log('register')
       let obj = {
@@ -40,9 +84,10 @@ export default {
         email: this.email,
         password: this.password
       }
-      axios.post('http://localhost:3000/users/register',obj)
+      axios.post('http https://api-overflow.ariefardi.xyz/users/register',obj)
       .then(({data})=> {
         console.log(data)
+        this.$router.push('/login')
       })
       .catch(err=> {
         console.log(err.message)

@@ -87,7 +87,7 @@ export default new Vuex.Store({
   actions: {
     getQuestion (context) {
       console.log('get axios here')
-      axios.get('http://localhost:3000/articles')
+      axios.get('https://api-overflow.ariefardi.xyz/articles')
       .then(({data})=> {
         console.log(data.articles)
         context.commit('setArticles', data.articles)
@@ -98,7 +98,7 @@ export default new Vuex.Store({
       console.log('post question')
       let token = localStorage.getItem('token')
       console.log(token)
-      axios.post('http://localhost:3000/articles', {
+      axios.post('https://api-overflow.ariefardi.xyz/articles', {
         title: this.state.title,
         content: this.state.content,
         tags: this.state.tags
@@ -121,7 +121,7 @@ export default new Vuex.Store({
     getOneQuestion (context,value) {
       // console.log(value, ' ini dari store')
       let id = value
-      axios.get('http://localhost:3000/articles/'+id)
+      axios.get('https://api-overflow.ariefardi.xyz/articles/'+id)
       .then(({data})=> {
           let result = data.article
           console.log(result)
@@ -131,7 +131,7 @@ export default new Vuex.Store({
     postYourAnswer (context, id) {
       let token = localStorage.getItem('token')
       let articleId = id
-      axios.post('http://localhost:3000/answers',{
+      axios.post('https://api-overflow.ariefardi.xyz/answers',{
           content: this.state.answerQuestion,
           article : articleId
       },{
@@ -158,7 +158,7 @@ export default new Vuex.Store({
       let userId = localStorage.getItem('userId')
       console.log(token)
       console.log('upvoteQeustion')
-      axios.post('http://localhost:3000/articles/upvote/'+id, {}, {
+      axios.post('https://api-overflow.ariefardi.xyz/articles/upvote/'+id, {}, {
         headers: {
           token
         }
@@ -185,7 +185,7 @@ export default new Vuex.Store({
       let userId = localStorage.getItem('userId')
       console.log(token)
       console.log(userId)
-      axios.post('http://localhost:3000/articles/downvote/'+id, {}, {
+      axios.post('https://api-overflow.ariefardi.xyz/articles/downvote/'+id, {}, {
         headers: {
           token
         }
@@ -213,7 +213,7 @@ export default new Vuex.Store({
       let userId = localStorage.getItem('userId')
       console.log(this.state.pageArticle.answers[id]._id)
       let query = this.state.pageArticle.answers[id]._id
-      axios.post('http://localhost:3000/answers/upvote/'+query, {}, {
+      axios.post('https://api-overflow.ariefardi.xyz/answers/upvote/'+query, {}, {
         headers: {
           token
         }
@@ -245,7 +245,7 @@ export default new Vuex.Store({
       let userId = localStorage.getItem('userId')
       console.log(this.state.pageArticle.answers[id]._id)
       let query = this.state.pageArticle.answers[id]._id
-      axios.post('http://localhost:3000/answers/downvote/'+query, {}, {
+      axios.post('https://api-overflow.ariefardi.xyz/answers/downvote/'+query, {}, {
         headers: {
           token
         }
@@ -273,7 +273,7 @@ export default new Vuex.Store({
     },
     login (context) {
       console.log('login')
-      axios.post('http://localhost:3000/users/login', {
+      axios.post('https://api-overflow.ariefardi.xyz/users/login', {
           username: this.state.username,
           password: this.state.password
       })
@@ -298,7 +298,7 @@ export default new Vuex.Store({
     },
     getQuestionByUser ({commit},id) {
       console.log(id, ' ini masuk gak get question by user')
-      axios.get('http://localhost:3000/articles/users/'+id)
+      axios.get('https://api-overflow.ariefardi.xyz/articles/users/'+id)
       .then(({data})=> {
         console.log(data.articles)
         let result = data.articles
@@ -322,7 +322,7 @@ export default new Vuex.Store({
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.value) {
-          axios.delete('http://localhost:3000/articles/delete/'+id)
+          axios.delete('https://api-overflow.ariefardi.xyz/articles/delete/'+id)
           .then((response)=> {
             console.log(response)
             swal2(
@@ -344,7 +344,7 @@ export default new Vuex.Store({
       let userId = localStorage.getItem('userId')
       // axios.put('http://localhost:3000/articles/update/'+obj.query)
       // console.log(this.state.articles)
-      axios.put('http://localhost:3000/articles/update/'+obj.query,{
+      axios.put('https://api-overflow.ariefardi.xyz/articles/update/'+obj.query,{
         title: this.state.title,
         content: this.state.content
       },{
@@ -364,7 +364,7 @@ export default new Vuex.Store({
     },
     getOneForQuestionUpdate ({commit}, value) {
       let id = value
-      axios.get('http://localhost:3000/articles/'+id)
+      axios.get('https://api-overflow.ariefardi.xyz/articles/'+id)
       .then(({data})=> {
           let result = data.article
           console.log(result, ' result dari getOne for question update')
